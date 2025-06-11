@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)https://activeacademy.edu.np/index.php -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Academy</title>
+    <link rel="icon" type="image/png" href="https://activeacademy.edu.np/image/logo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-section {
+            position: relative;
+            flex: 1;
+            background: url('uploads/welcome.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 51, 102, 0.5), rgba(128, 0, 0, 0.5));
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-width: 90%;
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .user-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .user-options button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .user-options button:hover {
+            background-color: #4d0000;
+        }
+
+        .locked-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .additional-buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .additional-buttons button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .additional-buttons button:hover {
+            background-color: #003d82;
+        }
+
+        .additional-buttons button.locked {
+            background-color: #999;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        footer a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .options-container {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .upload-form-container, .inquiry-form-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: left;
+            position: relative;
+        }
+
+        .form h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .form input[type="text"], .form input[type="tel"], .form textarea, .form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form button {
+            background-color: #800000;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .cancel-btn {
+            font-size: 24px;
+            color: #800000;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-weight: bold;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Mobile CSS maintaining desktop layout */
+        @media (max-width: 768px) {
+            .content {
+                padding: 15px;
+            }
+
+            .content h1 {
+                font-size: 1.6rem;
+                margin-bottom: 15px;
+            }
+
+            .user-options, .additional-buttons {
+                gap: 8px;
+            }
+
+            .user-options button, .additional-buttons button {
+                padding: 8px 16px;
+                font-size: 12px;
+                min-width: 100px;
+            }
+
+            .form {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .form h3 {
+                font-size: 1.3rem;
+            }
+
+            .form input[type="text"], .form input[type="tel"], .form textarea, .form select {
+                padding: 6px;
+                font-size: 14px;
+            }
+
+            .form button {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .locked-message {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            footer {
+                padding: 1.5rem 0; /* Slightly reduced padding for mobile */
+            }
+
+            footer .footer-content {
+                padding: 0 15px; /* Adjusted padding for mobile */
+            }
+
+            footer p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content h1 {
+                font-size: 1.4rem;
+            }
+
+            .user-options button, .additional-buttons button {
+                padding: 6px 12px;
+                font-size: 11px;
+                min-width: 80px;
+            }
+
+            .form h3 {
+                font-size: 1.2rem;
+            }
+
+            .form input[type="text"], .form input[type="tel"], .form textarea, .form select {
+                padding: 5px;
+                font-size: 13px;
+            }
+
+            .form button {
+                padding: 6px;
+                font-size: 13px;
+            }
+
+            footer {
+                padding: 1rem 0; /* Further reduced padding for very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-section">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>Welcome to Active Academy</h1>
+            <div class="user-options">
+                <button onclick="showOptions(&#39;studentOptions&#39;)">Student</button>
+                <button onclick="showOptions(&#39;parentOptions&#39;)">Parent</button>
+                <button onclick="location.href=&#39;about_us.php&#39;">About Us</button>
+                <button onclick="location.href=&#39;gallery.php&#39;">Gallery</button>
+                <button onclick="showOptions(&#39;alumniOptions&#39;)">Alumni</button>
+                <button onclick="showOptions(&#39;facultyOptions&#39;)">Teacher</button>
+            </div>
+            <div id="lockedMessage" class="locked-message">It's currently locked.</div>
+            
+            <div class="options-container" id="studentOptions">
+                <button onclick="location.href=&#39;student.php&#39;">Choose your faculty</button>
+                <label for="facultyFaculty">Choose your faculty:</label>
+                <select id="facultyFaculty">
+                    <option value="montessori">Montessori</option>
+                    <option value="school">School</option>
+                    <option value="plus_two">Plus Two</option>
+                    <option value="bbs">BBS</option>
+                    <option value="bed">B.Ed.</option>
+                    <option value="ba">B.A</option>
+                    <option value="bsw">BSW</option>
+                    <option value="ma">M.A</option>
+                    <option value="mbs">MBS</option>
+                </select>
+            </div>
+
+            <div class="options-container" id="parentOptions">
+                <label for="facultyFaculty">Choose your faculty:</label>
+                <select id="facultyFaculty">
+                    <option value="montessori">Montessori</option>
+                    <option value="school">School</option>
+                    <option value="plus_two">Plus Two</option>
+                    <option value="bbs">BBS</option>
+                    <option value="bed">B.Ed.</option>
+                    <option value="ba">B.A</option>
+                    <option value="bsw">BSW</option>
+                    <option value="ma">M.A</option>
+                    <option value="mbs">MBS</option>
+                </select>
+            </div>
+
+            <div class="options-container" id="alumniOptions">
+                <button>Alumni Portal</button>
+                <button>Alumni Network</button>
+            </div>
+
+            <div class="options-container" id="facultyOptions">
+            </div>
+            
+            <div class="additional-buttons">
+                <button onclick="showUploadForm()">Upload Proposal</button>
+                <button onclick="showInquiryForm()">Inquiry</button>
+                <button onclick="location.href=&#39;seenotice.php&#39;">Notices</button>
+                <button onclick="location.href=&#39;seeevent.php&#39;">Events</button>
+                <button onclick="window.location.href=&#39;vacancies.php&#39;">Vacancy</button>
+                <button onclick="location.href=&#39;articles.php&#39;">Articles</button>
+                <button onclick="location.href=&#39;finance.php&#39;">Pay Fee</button>
+                <button onclick="location.href=&#39;choosefaculty.php&#39;">Our Faculty</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>© Active Academy. All Rights Reserved.</p>
+            <p>
+                <a href="https://activeacademy.edu.np/index.php#">Privacy Policy</a> | 
+                <a href="https://activeacademy.edu.np/index.php#">Terms of Service</a> | 
+                <a href="mailto:activeacademy365@gmail.com">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <div class="upload-form-container" id="uploadFormContainer">
+        <div class="form">
+            <span class="cancel-btn" onclick="closeUploadForm()">×</span>
+            <h3>Upload Proposal</h3>
+            <div class="success-message" id="proposalSuccessMessage">Proposal submitted successfully!</div>
+            <form id="proposalForm" enctype="multipart/form-data">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" placeholder="Enter the title" required="">
+                <label for="company">Company Name:</label>
+                <input type="text" id="company" name="company" placeholder="Enter company name" required="">
+                <label for="contact">Contact Number:</label>
+                <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required="">
+                <label for="file">Attach File:</label>
+                <input type="file" id="file" name="file">
+                <button type="submit">Submit Proposal</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="inquiry-form-container" id="inquiryFormContainer">
+        <div class="form">
+            <span class="cancel-btn" onclick="closeInquiryForm()">×</span>
+            <h3>Inquiry Form</h3>
+            <div class="success-message" id="inquirySuccessMessage">Inquiry submitted successfully!</div>
+            <form id="inquiryForm">
+                <label for="inquiry">Your Inquiry:</label>
+                <textarea id="inquiry" name="inquiry" placeholder="Enter your inquiry" rows="4" required=""></textarea>
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required="">
+                <label for="contactInquiry">Contact Number:</label>
+                <input type="tel" id="contactInquiry" name="contactInquiry" placeholder="Enter your contact number" required="">
+                <label for="facultyInquiry">Faculty:</label>
+                <select id="facultyInquiry" name="facultyInquiry" required="">
+                    <option value="montessori">Montessori</option>
+                    <option value="school">School</option>
+                    <option value="plus_two">Plus Two</option>
+                    <option value="bbs">BBS</option>
+                    <option value="bed">B.Ed.</option>
+                    <option value="ba">B.A</option>
+                    <option value="bsw">BSW</option>
+                    <option value="ma">M.A</option>
+                    <option value="mbs">MBS</option>
+                    <option value="none">None</option>
+                </select>
+                <button type="submit">Submit Inquiry</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function showOptions(optionId) {
+            const allOptions = document.querySelectorAll('.options-container');
+            allOptions.forEach(option => option.style.display = 'none');
+
+            const lockedMessage = document.getElementById('lockedMessage');
+            lockedMessage.style.display = 'none';
+
+            const selectedOption = document.getElementById(optionId);
+            if (selectedOption) {
+                if (optionId === 'parentOptions' || optionId === 'alumniOptions' || optionId === 'facultyOptions') {
+                    const button = document.querySelector(`button[onclick="showOptions('${optionId}')"]`);
+                    if (button) {
+                        const buttonRect = button.getBoundingClientRect();
+                        const scrollY = window.scrollY || window.pageYOffset;
+
+                        const topPosition = buttonRect.bottom + scrollY + 5;
+                        const leftPosition = buttonRect.left + (buttonRect.width / 2);
+
+                        lockedMessage.style.top = topPosition + 'px';
+                        lockedMessage.style.left = leftPosition + 'px';
+                        lockedMessage.style.display = 'block';
+                        setTimeout(() => {
+                            lockedMessage.style.display = 'none';
+                        }, 3000);
+                    }
+                } else {
+                    selectedOption.style.display = 'block';
+                }
+            }
+        }
+
+        function showUploadForm() {
+            document.getElementById('uploadFormContainer').style.display = 'flex';
+        }
+
+        function closeUploadForm() {
+            document.getElementById('uploadFormContainer').style.display = 'none';
+        }
+
+        function showInquiryForm() {
+            document.getElementById('inquiryFormContainer').style.display = 'flex';
+        }
+
+        function closeInquiryForm() {
+            document.getElementById('inquiryFormContainer').style.display = 'none';
+        }
+
+        document.getElementById('proposalForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            formData.append('ajax', 'submit_proposal');
+
+            fetch('index.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const successMessage = document.getElementById('proposalSuccessMessage');
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                        closeUploadForm();
+                    }, 5000);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+
+        document.getElementById('inquiryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            formData.append('ajax', 'submit_inquiry');
+
+            fetch('index.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const successMessage = document.getElementById('inquirySuccessMessage');
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                        closeInquiryForm();
+                    }, 5000);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+    </script>
+
+</body></html>
